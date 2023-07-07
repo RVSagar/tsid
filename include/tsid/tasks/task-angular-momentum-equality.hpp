@@ -44,6 +44,8 @@ class TaskAMEquality : public TaskMotion {
 
   virtual ~TaskAMEquality() {}
 
+  void setMask(math::ConstRefVector mask);
+
   int dim() const;
 
   const ConstraintBase& compute(const double t, ConstRefVector q,
@@ -54,27 +56,34 @@ class TaskAMEquality : public TaskMotion {
   void setReference(const TrajectorySample& ref);
   const TrajectorySample& getReference() const;
 
-  const Vector3& getDesiredMomentumDerivative() const;
-  Vector3 getdMomentum(ConstRefVector dv) const;
+  const Vector& getDesiredMomentumDerivative() const;
+  Vector getdMomentum(ConstRefVector dv) const;
 
-  const Vector3& momentum_error() const;
-  const Vector3& momentum() const;
+  const Vector& momentum_error() const;
+  const Vector& momentum() const;
+  const Vector & momentum_masked() const;
   const Vector& momentum_ref() const;
   const Vector& dmomentum_ref() const;
 
-  const Vector3& Kp();
-  const Vector3& Kd();
+  const Vector& Kp();
+  const Vector& Kd();
   void Kp(ConstRefVector Kp);
   void Kd(ConstRefVector Kp);
 
  protected:
-  Vector3 m_Kp;
-  Vector3 m_Kd;
-  Vector3 m_L_error, m_dL_error;
-  Vector3 m_dL_des;
+  Vector m_Kp;
+  Vector m_Kd;
+  Vector m_L_error, m_dL_error;
+  Vector m_dL_des;
 
-  Vector3 m_drift;
-  Vector3 m_L, m_dL;
+  Vector m_drift;
+  Vector m_L, m_dL;
+
+  Vector m_L_error_masked;
+  Vector m_L_masked;
+  Vector m_dL_des_masked;
+  Vector m_drift_masked;
+
   TrajectorySample m_ref;
   ConstraintEquality m_constraint;
 };

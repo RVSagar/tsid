@@ -72,6 +72,10 @@ struct TaskAMEqualityPythonVisitor
                       bp::make_function(
                           &TaskAMEqualityPythonVisitor::Kd,
                           bp::return_value_policy<bp::copy_const_reference>()))
+
+        .add_property("mask", bp::make_function(&TaskAMEqualityPythonVisitor::getmask, bp::return_value_policy<bp::copy_const_reference>()), "Return mask")
+        .def("setMask", &TaskAMEqualityPythonVisitor::setmask, bp::arg("mask"))
+
         .def("setKp", &TaskAMEqualityPythonVisitor::setKp, bp::arg("Kp"))
         .def("setKd", &TaskAMEqualityPythonVisitor::setKd, bp::arg("Kd"))
         .def("compute", &TaskAMEqualityPythonVisitor::compute,
@@ -129,6 +133,12 @@ struct TaskAMEqualityPythonVisitor
   }
   static void setKd(TaskAM& self, const ::Eigen::VectorXd Kv) {
     return self.Kd(Kv);
+  }
+  static const Eigen::VectorXd & getmask(const TaskAM & self){
+    return self.getMask();
+  }
+  static void setmask (TaskAM & self, const Eigen::VectorXd mask){
+    return self.setMask(mask);
   }
   static void expose(const std::string& class_name) {
     std::string doc = "TaskAMEqualityPythonVisitor info.";
