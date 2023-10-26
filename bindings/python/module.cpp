@@ -21,6 +21,7 @@
 #include "tsid/bindings/python/robots/expose-robots.hpp"
 #include "tsid/bindings/python/constraint/expose-constraints.hpp"
 #include "tsid/bindings/python/contacts/expose-contact.hpp"
+#include "tsid/bindings/python/contacts/expose-measured-forces.hpp"
 #include "tsid/bindings/python/trajectories/expose-trajectories.hpp"
 #include "tsid/bindings/python/tasks/expose-tasks.hpp"
 #include "tsid/bindings/python/solvers/expose-solvers.hpp"
@@ -50,6 +51,7 @@ BOOST_PYTHON_MODULE(tsid_pywrap) {
   exposeRobots();
   exposeConstraints();
   exposeContact();
+  exposeMeasuredForces();
   exposeTrajectories();
   exposeTasks();
   exposeSolvers();

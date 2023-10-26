@@ -26,6 +26,8 @@
 #include "tsid/bindings/python/solvers/HQPData.hpp"
 #include "tsid/contacts/contact-6d.hpp"
 #include "tsid/contacts/contact-point.hpp"
+#include "tsid/contacts/measured-3Dforce.hpp"
+#include "tsid/contacts/measured-6Dwrench.hpp"
 #include "tsid/tasks/task-joint-posture.hpp"
 #include "tsid/tasks/task-se3-equality.hpp"
 #include "tsid/tasks/task-com-equality.hpp"
@@ -96,10 +98,18 @@ struct InvDynPythonVisitor
              &InvDynPythonVisitor::addRigidContactPointWithPriorityLevel,
              bp::args("contact", "force_reg_weight", "motion_weight",
                       "priority_level"))
+        .def("addMeasuredForce",
+             &InvDynPythonVisitor::addMeasuredForce3D,
+             bp::args("measuredForce"))
+        .def("addMeasuredForce",
+             &InvDynPythonVisitor::addMeasuredForce6D,
+             bp::args("measuredWrench"))
         .def("removeTask", &InvDynPythonVisitor::removeTask,
              bp::args("task_name", "duration"))
         .def("removeRigidContact", &InvDynPythonVisitor::removeRigidContact,
              bp::args("contact_name", "duration"))
+        .def("removeMeasuredForce", &InvDynPythonVisitor::removeMeasuredForce,
+             bp::args("measuredForceName"))
         .def("removeFromHqpData", &InvDynPythonVisitor::removeFromHqpData,
              bp::args("constraint_name"))
         .def("computeProblemData", &InvDynPythonVisitor::computeProblemData,
@@ -203,6 +213,14 @@ struct InvDynPythonVisitor
     return self.addRigidContact(contact, force_regularization_weight,
                                 motion_weight, priority_level);
   }
+  static bool addMeasuredForce3D(T& self,
+                                          contacts::Measured6Dwrench& measuredForce) {
+    return self.addMeasuredForce(measuredForce);
+  }
+  static bool addMeasuredForce6D(T& self,
+                                          contacts::Measured6Dwrench& measuredWrench) {
+    return self.addMeasuredForce(measuredWrench);
+  }
   static bool removeTask(T& self, const std::string& task_name,
                          double transition_duration) {
     return self.removeTask(task_name, transition_duration);
@@ -210,6 +228,9 @@ struct InvDynPythonVisitor
   static bool removeRigidContact(T& self, const std::string& contactName,
                                  double transition_duration) {
     return self.removeRigidContact(contactName, transition_duration);
+  }
+  static bool removeMeasuredForce(T& self, const std::string& measuredForceName) {
+    return self.removeMeasuredForce(measuredForceName);
   }
   static bool removeFromHqpData(T& self, const std::string& constraintName) {
     return self.removeFromHqpData(constraintName);
